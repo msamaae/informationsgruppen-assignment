@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-
+use App\Http\Controllers\Api\TodoListController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,5 +33,9 @@ Route::post('/login', [AuthController::class, 'login']);
 */
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::get('/todo-lists', [TodoListController::class, 'index']);
+    Route::post('/todo-lists', [TodoListController::class, 'store']);
+    Route::delete('/todo-lists/{id}', [TodoListController::class, 'destroy']);
 });
 

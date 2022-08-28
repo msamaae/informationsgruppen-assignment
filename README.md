@@ -16,13 +16,13 @@ Användning av git är ett krav. Det behöver inte ligga på GitHub eller Gitlab
 
 [x] Som en gäst kan jag logga in med mitt konto
 
-[] Som en användare kan jag logga ut ifrån mitt konto
+[x] Som en användare kan jag logga ut ifrån mitt konto
 
-[] Som en användare kan jag skapa en todo-lista
+[x] Som en användare kan jag skapa en todo-lista
 
-[] Som en användare kan jag visa mina todo-listor
+[x] Som en användare kan jag visa mina todo-listor
 
-[] Som en användare kan jag ta bort min todo-lista
+[x] Som en användare kan jag ta bort min todo-lista
 
 [] Som en användare kan jag lägga till uppgifter i min todo-lista
 
