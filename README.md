@@ -1,1 +1,0 @@
-# informationsgruppen-todo-app
