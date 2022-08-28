@@ -12,9 +12,9 @@ Användning av git är ett krav. Det behöver inte ligga på GitHub eller Gitlab
 
 #### Uppgiften består i att skapa en todo-applikation, som uppfyller följande user stories:
 
-[] Som en gäst kan jag skapa ett användarkonto, så jag kan komma åt applikationen
+[x] Som en gäst kan jag skapa ett användarkonto, så jag kan komma åt applikationen
 
-[] Som en gäst kan jag logga in med mitt konto
+[x] Som en gäst kan jag logga in med mitt konto
 
 [] Som en användare kan jag logga ut ifrån mitt konto
 
