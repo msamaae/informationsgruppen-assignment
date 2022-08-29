@@ -27,10 +27,28 @@ export default new Vuex.Store({
 						password,
 					})
 					.then(response => {
-						const token = response.data.access_token;
+						const token = response.data.token;
 
 						localStorage.setItem('access_token', token);
 						context.commit('SET_TOKEN', token);
+						resolve(response);
+					})
+					.catch(error => {
+						console.error(error);
+						reject(error);
+					});
+			});
+		},
+		register(context, { name, email, password, password_confirmation }) {
+			return new Promise((resolve, reject) => {
+				axios
+					.post('/register', {
+						name,
+						email,
+						password,
+						password_confirmation,
+					})
+					.then(response => {
 						resolve(response);
 					})
 					.catch(error => {

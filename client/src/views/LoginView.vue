@@ -1,10 +1,10 @@
 <template>
-    <div class="login-container">
+    <div class="form-container">
 
         <div v-if="errorText">{{ errorText }}</div>
 
         <form action="#" @submit.prevent="login">
-            <h2>Please sign in</h2>
+            <h2>Sign in</h2>
 
             <div>
                 <label for="email">Email</label>
@@ -26,7 +26,6 @@
 
 <script>
 export default {
-    name: 'Login',
     data() {
         return {
             email: '',
@@ -61,10 +60,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.login-container {
-    max-width: 300px;
-    margin: auto;
-}
-</style>
 
