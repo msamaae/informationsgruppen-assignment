@@ -17,6 +17,7 @@ class CreateTodosTable extends Migration
             $table->id();
             $table->unsignedBigInteger('todo_list_id')->index();
             $table->string('description')->nullable();
+            $table->boolean('completed');
             $table->timestamps();
         });
     }

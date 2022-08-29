@@ -24,10 +24,10 @@ Användning av git är ett krav. Det behöver inte ligga på GitHub eller Gitlab
 
 [x] Som en användare kan jag ta bort min todo-lista
 
-[] Som en användare kan jag lägga till uppgifter i min todo-lista
+[x] Som en användare kan jag lägga till uppgifter i min todo-lista
 
-[] Som en användare kan jag visa alla uppgifter i min todo-lista
+[x] Som en användare kan jag visa alla uppgifter i min todo-lista
 
-[] Som en användare kan jag ta bort uppgifter i min todo-lista
+[x] Som en användare kan jag ta bort uppgifter i min todo-lista
 
 [] Som en användare kan jag markera uppgifter i min todo-lista som klara

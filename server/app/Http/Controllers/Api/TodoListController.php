@@ -10,7 +10,9 @@ class TodoListController extends Controller
 {
     public function index()
     {
-        return TodoList::where('user_id', '=', auth()->user()->id)->get();
+        $todoList = TodoList::where('user_id', auth()->user()->id)->get();
+
+        return response()->json($todoList);
     }
 
     public function store(Request $request)
@@ -24,11 +26,16 @@ class TodoListController extends Controller
             'name' => $request->name
         ]);
 
-        return $todoList;
+        return response()->json($todoList, 201);
     }
 
-    public function destroy($id) 
+    public function show($id)
     {
-        return TodoList::destroy($id);
+        return response()->json(TodoList::findOrFail($id));
+    }
+
+    public function destroy($id)
+    {
+        return response()->json(TodoList::destroy($id));
     }
 }

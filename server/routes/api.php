@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\TodoController;
 use App\Http\Controllers\Api\TodoListController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+
 /*
 |-------------------------------------------------------------------------------
 | Authenticated API Routes
@@ -34,8 +36,16 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::get('/todo-lists', [TodoListController::class, 'index']);
-    Route::post('/todo-lists', [TodoListController::class, 'store']);
-    Route::delete('/todo-lists/{id}', [TodoListController::class, 'destroy']);
-});
+    Route::prefix('todolists')->group(function() {
+        Route::get('/', [TodoListController::class, 'index']);
+        Route::get('/{todolist}', [TodoListController::class, 'show']);
+        Route::post('/', [TodoListController::class, 'store']);
+        Route::delete('/{todolist}', [TodoListController::class, 'destroy']);
+    
+        Route::get('/{todolist}/todos', [TodoController::class, 'index']);
+        Route::post('/{todolist}/todos', [TodoController::class, 'store']);
+        Route::put('/{todolist}/todos/{todo}', [TodoController::class, 'completed']);
+        Route::delete('/{todolist}/todos/{todo}', [TodoController::class, 'destroy']);
 
+    });
+});
