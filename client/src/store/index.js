@@ -310,5 +310,4 @@ export default new Vuex.Store({
 			context.commit('SET_FILTER', filter);
 		},
 	},
-	modules: {},
 });

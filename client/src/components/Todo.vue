@@ -77,7 +77,6 @@ h3 {
     h3 {
         margin-top: 2.5rem;
     }
-
 }
 
 .todo-input {

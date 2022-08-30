@@ -30,7 +30,6 @@ function configRoutes() {
 	return [
 		{
 			path: '/',
-			// redirect: '/login',
 			name: 'AuthLayout',
 			component: AuthLayout,
 			children: [

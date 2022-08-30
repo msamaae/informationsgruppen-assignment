@@ -30,25 +30,4 @@ export default {
     font-size: 24px;
     height: 100vh;
 }
-
-.nav {
-    display: flex;
-    list-style: none;
-    padding: 15px 0;
-    margin: 0;
-    justify-content: flex-end;
-    background: #60d394;
-    margin-bottom: 24px;
-}
-
-.nav a {
-    color: #132a13;
-    border-bottom: 1px;
-    padding: 0 25px;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: .1rem;
-    text-decoration: none;
-    text-transform: uppercase;
-}
 </style>

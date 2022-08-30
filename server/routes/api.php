@@ -38,7 +38,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('todolists')->group(function() {
         Route::get('/', [TodoListController::class, 'index']);
-        Route::get('/{todolist}', [TodoListController::class, 'show']);
         Route::post('/', [TodoListController::class, 'store']);
         Route::delete('/{todolist}', [TodoListController::class, 'destroy']);
     

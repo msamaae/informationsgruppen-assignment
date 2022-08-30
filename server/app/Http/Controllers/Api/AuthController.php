@@ -30,7 +30,7 @@ class AuthController extends Controller
             'token' => $token
         ];
 
-        return response($response, 201);
+        return response()->json($response, 201);
     }
 
     public function login(Request $request)
@@ -57,15 +57,13 @@ class AuthController extends Controller
             'token' => $token
         ];
 
-        return response($response);
+        return response()->json($response);
     }
 
     public function logout()
     {
         auth()->user()->tokens()->delete();
 
-        return [
-            'message' => 'Logged out.'
-        ];
+        return response()->json(['message' => 'Logged out.']);
     }
 }
