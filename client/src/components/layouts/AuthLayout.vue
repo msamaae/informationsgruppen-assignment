@@ -24,7 +24,7 @@
     }
     
     &.success {
-        color: #60d394;;
+        color: #60d394;
     }
 }
 

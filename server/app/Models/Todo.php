@@ -9,7 +9,12 @@ class Todo extends Model
 {
     use HasFactory;
 
+    protected $attributes = [
+        'completed' => false
+    ];
+
     protected $fillable = [
+        'user_id',
         'todo_list_id',
         'description',
         'completed'

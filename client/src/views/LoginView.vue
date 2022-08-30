@@ -26,8 +26,8 @@
 export default {
     data() {
         return {
-            email: 'gg@p123.com',
-            password: 'qwewq',
+            email: '',
+            password: '',
             isLoading: false,
             errorText: '',
         }

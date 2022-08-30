@@ -8,9 +8,18 @@ use App\Http\Controllers\Controller;
 
 class TodoListController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->userId = auth()->user()->id;
+    
+            return $next($request);
+        });
+    }
+
     public function index()
     {
-        $todoList = TodoList::where('user_id', auth()->user()->id)->get();
+        $todoList = TodoList::where('user_id', $this->userId)->get();
 
         return response()->json($todoList);
     }
@@ -22,7 +31,7 @@ class TodoListController extends Controller
         ]);
 
         $todoList = TodoList::create([
-            'user_id' => auth()->user()->id,
+            'user_id' => $this->userId,
             'name' => $request->name
         ]);
 
@@ -31,7 +40,7 @@ class TodoListController extends Controller
 
     public function show($id)
     {
-        $todoList = TodoList::where('user_id', auth()->user()->id)->find($id);
+        $todoList = TodoList::where('user_id', $this->userId)->find($id);
 
         if (!$todoList) {
             return response()->json(['message' => 'Unauthorized.'], 401);
@@ -42,6 +51,11 @@ class TodoListController extends Controller
 
     public function destroy($id)
     {
-        return response()->json(TodoList::destroy($id));
+        $result = TodoList::destroy($id);
+
+        if ($result === 1) {
+            $todoList = TodoList::where('user_id', $this->userId)->get();
+            return response()->json($todoList);
+        }
     }
 }

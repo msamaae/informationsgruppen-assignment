@@ -10,7 +10,11 @@ class TodoController extends Controller
 {
     public function index($todoListId)
     {
-        $todo = Todo::where('todo_list_id', $todoListId)->get();
+        $todo = Todo::where([
+            ['user_id', auth()->user()->id],
+            ['todo_list_id', $todoListId]
+        ])
+        ->get();
 
         return response()->json($todo);
     }
@@ -22,9 +26,9 @@ class TodoController extends Controller
         ]);
 
         $todo = Todo::create([
+            'user_id' => auth()->user()->id,
             'todo_list_id' => $todoListId,
             'description' => $request->description,
-            'completed' => 0
         ]);
 
         return response()->json($todo, 201);
@@ -32,19 +36,36 @@ class TodoController extends Controller
 
     public function destroy($todoListId, $todoId) 
     {
-        return response()->json(Todo::destroy($todoId));
+        $result = Todo::destroy($todoId);
+
+        if ($result === 1) {
+            $todo = Todo::where([
+                ['user_id', auth()->user()->id],
+                ['todo_list_id', $todoListId]
+            ])
+            ->get();
+
+            return response()->json($todo);
+        }
     }
 
     public function completed(Request $request, $todoListId, $todoId) 
     {
-        $todo = Todo::findOrFail($todoId);
+        $result = Todo::where([
+            ['id', $todoId],
+            ['user_id', auth()->user()->id],
+            ['todo_list_id', $todoListId]
+        ])
+        ->update(['completed' => $request->completed]);
 
-        // $request->validate([
-        //     'completed' => 'required'
-        // ]);
+        if ($result > 0) {
+            $todo = Todo::where([
+                ['user_id', auth()->user()->id],
+                ['todo_list_id', $todoListId]
+            ])
+            ->get();
 
-        $todo->completed = $request->completed;
-
-        return response()->json($todo);
+            return response()->json($todo);
+        }
     }
 }

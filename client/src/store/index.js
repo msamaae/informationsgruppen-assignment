@@ -14,6 +14,7 @@ export default new Vuex.Store({
 		filter: 'all',
 		todoLists: [],
 		todos: [],
+        selectedTodoList: 0
 	},
 	getters: {
 		isLoggedIn(state) {
@@ -22,11 +23,33 @@ export default new Vuex.Store({
 		name(state) {
 			return state.name;
 		},
+        selectedTodoList(state) {
+            return state.selectedTodoList;
+        },
 		todoLists(state) {
 			return state.todoLists;
 		},
 		todos(state) {
 			return state.todos;
+		},
+		remaining(state) {
+			return state.todos.filter(todo => !todo.completed).length;
+		},
+		anyRemaining(state, getters) {
+			return getters.remaining !== 0;
+		},
+		todosFiltered(state) {
+			if (state.filter == 'all') {
+				return state.todos;
+			} else if (state.filter == 'active') {
+				return state.todos.filter(todo => !todo.completed);
+			} else if (state.filter == 'completed') {
+				return state.todos.filter(todo => todo.completed);
+			}
+			return state.todos;
+		},
+		showClearCompletedButton(state) {
+			return state.todos.filter(todo => todo.completed).length > 0;
 		},
 	},
 	mutations: {
@@ -48,6 +71,9 @@ export default new Vuex.Store({
 		CLEAR_TOKEN(state) {
 			state.token = null;
 		},
+        SELECTED_TODOLIST(state, selectedTodoList) {
+            state.selectedTodoList = selectedTodoList;
+        },
 		SET_TODOLISTS(state, todoLists) {
 			state.todoLists = todoLists;
 		},
@@ -57,8 +83,17 @@ export default new Vuex.Store({
 				name: todoList.name,
 			});
 		},
-        SET_TODOS(state, todos) {
+		SET_TODOS(state, todos) {
 			state.todos = todos;
+		},
+		ADD_TODO(state, todo) {
+			state.todos.push({
+				id: todo.id,
+				description: todo.description,
+			});
+		},
+		SET_FILTER(state, filter) {
+			state.filter = filter;
 		},
 	},
 	actions: {
@@ -173,13 +208,30 @@ export default new Vuex.Store({
 						})
 						.catch(error => {
 							console.error(error);
-
 							reject(error);
 						});
 				});
 			}
 		},
-        getTodos(context, { todoListId }) {
+		deleteTodoList(context, { todoListId }) {
+			axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.token}`;
+
+			if (context.getters.isLoggedIn) {
+				return new Promise((resolve, reject) => {
+					axios
+						.delete(`/todolists/${todoListId}`)
+						.then(response => {
+							context.commit('SET_TODOLISTS', response.data);
+							resolve(response);
+						})
+						.catch(error => {
+							console.error(error);
+							reject(error);
+						});
+				});
+			}
+		},
+		getTodos(context, { todoListId }) {
 			axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.token}`;
 
 			if (context.getters.isLoggedIn) {
@@ -196,6 +248,66 @@ export default new Vuex.Store({
 						});
 				});
 			}
+		},
+		addTodo(context, { todoListId, description }) {
+			axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.token}`;
+
+			if (context.getters.isLoggedIn) {
+				return new Promise((resolve, reject) => {
+					axios
+						.post(`/todolists/${todoListId}/todos`, { description })
+						.then(response => {
+							context.commit('ADD_TODO', response.data);
+							resolve(response);
+						})
+						.catch(error => {
+							console.error(error);
+							reject(error);
+						});
+				});
+			}
+		},
+		deleteTodo(context, { todoListId, todoId }) {
+			axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.token}`;
+
+			if (context.getters.isLoggedIn) {
+				return new Promise((resolve, reject) => {
+					axios
+						.delete(`/todolists/${todoListId}/todos/${todoId}`)
+						.then(response => {
+							context.commit('SET_TODOS', response.data);
+							resolve(response);
+						})
+						.catch(error => {
+							console.error(error);
+							reject(error);
+						});
+				});
+			}
+		},
+		completeTodo(context, { todoListId, todoId, completed }) {
+			axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.token}`;
+
+			if (context.getters.isLoggedIn) {
+				return new Promise((resolve, reject) => {
+					axios
+						.put(`/todolists/${todoListId}/todos/${todoId}`, { completed })
+						.then(response => {
+							context.commit('SET_TODOS', response.data);
+							resolve(response);
+						})
+						.catch(error => {
+							console.error(error);
+							reject(error);
+						});
+				});
+			}
+		},
+		selectedTodoList(context, todoListId) {
+			context.commit('SELECTED_TODOLIST', todoListId);
+		},
+		changeFilter(context, filter) {
+			context.commit('SET_FILTER', filter);
 		},
 	},
 	modules: {},
