@@ -1,24 +1,22 @@
 <template>
     <div class="form-container">
 
-        <div v-if="errorText">{{ errorText }}</div>
+        <div class="form-control form-text error" v-if="errorText">{{ errorText }}</div>
 
         <form action="#" @submit.prevent="login">
-            <h2>Sign in</h2>
+            <h2 class="form-control">Sign in</h2>
 
-            <div>
+            <div class="form-control">
                 <label for="email">Email</label>
-                <input type="email" required autofocus v-model="email">
+                <input type="email" id="email" class="form-input" required autofocus v-model="email">
             </div>
 
-            <div>
+            <div class="form-control">
                 <label for="password">Password</label>
-                <input type="password" required v-model="password">
+                <input type="password" id="password" class="form-input" required v-model="password">
             </div>
 
-            <div>
-                <button>Sign in</button>
-            </div>
+            <button class="form-btn">Sign in</button>
 
         </form>
     </div>
@@ -28,8 +26,8 @@
 export default {
     data() {
         return {
-            email: '',
-            password: '',
+            email: 'gg@p123.com',
+            password: 'qwewq',
             isLoading: false,
             errorText: '',
         }
@@ -45,10 +43,9 @@ export default {
                 })
 
                 if (200 === status) {
-                    this.isLoading = false; 
+                    this.isLoading = false;
                     this.$router.push({ name: 'home' });
-                }   
-
+                }
             } catch (error) {
                 console.error(error.response);
                 this.isLoading = false;

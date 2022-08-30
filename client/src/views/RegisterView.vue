@@ -1,40 +1,32 @@
 <template>
     <div class="form-container">
-        <div v-if="errorText">
-            <div v-for="(value, key) in errorText" :key="key">
+        <div class="form-control" v-if="errorText">
+            <div class="form-text error" v-for="(value, key) in errorText" :key="key">
                 {{ value[0] }}
             </div>
         </div>
 
-        <div v-if="successText">{{ successText }}</div>
+        <div class="form-control form-text success" v-if="successText">{{ successText }}</div>
 
         <form action="#" @submit.prevent="register">
-            <h2>Sign up</h2>
+            <h2 class="form-control">Sign up</h2>
 
-            <div>
+            <div class="form-control">
                 <label for="name">Name</label>
-                <input type="text" required autofocus v-model="name">
+                <input type="text" id="name" class="form-input" required autofocus v-model="name">
             </div>
 
-            <div>
+            <div class="form-control">
                 <label for="email">Email</label>
-                <input type="email" required v-model="email">
+                <input type="email" id="email" class="form-input" required v-model="email">
             </div>
 
-            <div>
+            <div class="form-control">
                 <label for="password">Password</label>
-                <input type="password" required v-model="password">
+                <input type="password" id="password" class="form-input" required v-model="password">
             </div>
 
-            <!-- <div>
-                <label for="password_confirmation">Password Confirmation</label>
-                <input type="password_confirmation" required v-model="password_confirmation">
-            </div> -->
-
-            <div>
-                <button>Sign up</button>
-            </div>
-
+            <button class="form-btn">Sign up</button>
         </form>
     </div>
 </template>
@@ -63,7 +55,7 @@ export default {
 
                 if (201 === status) {
                     this.successText = 'Registered successfully!'
-                    
+
                     this.name = '';
                     this.email = '';
                     this.password = '';

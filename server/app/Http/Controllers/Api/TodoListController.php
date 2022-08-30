@@ -31,7 +31,13 @@ class TodoListController extends Controller
 
     public function show($id)
     {
-        return response()->json(TodoList::findOrFail($id));
+        $todoList = TodoList::where('user_id', auth()->user()->id)->find($id);
+
+        if (!$todoList) {
+            return response()->json(['message' => 'Unauthorized.'], 401);
+        } else {
+            return response()->json($todoList);
+        }
     }
 
     public function destroy($id)
