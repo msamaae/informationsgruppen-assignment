@@ -96,10 +96,6 @@ h3 {
     margin-bottom: 12px;
 }
 
-p {
-    margin-top: 12px;
-}
-
 .todolist-input {
     width: 100%;
     padding: 10px 18px;

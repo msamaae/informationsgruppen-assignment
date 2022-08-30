@@ -51,6 +51,12 @@ h2 {
     margin: auto;
 }
 
+@media screen and (max-width: 768px) {
+  .home-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
 .todolist {
     /* border: 2px solid blue; */
     padding: 0 1.5rem;

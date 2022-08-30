@@ -8,7 +8,7 @@
         </div>
 
         <div v-for="(value, key) in todosFiltered" :key="key">
-            <TodoItem :todo-item="value"/>
+            <TodoItem :todo-item="value" />
         </div>
 
         <div class="extra-container">
@@ -30,10 +30,10 @@ import TodoFilter from './TodoFilter.vue';
 export default {
     name: 'Todo',
     components: {
-    TodoItem,
-    TodoItemsRemaining,
-    TodoFilter
-},
+        TodoItem,
+        TodoItemsRemaining,
+        TodoFilter
+    },
     props: {
         selectedTodoList: {
             required: true,
@@ -70,8 +70,14 @@ export default {
 
 <style scoped lang="scss">
 h3 {
-    text-align: center;
     margin-bottom: 12px;
+}
+
+@media screen and (max-width: 768px) {
+    h3 {
+        margin-top: 2.5rem;
+    }
+
 }
 
 .todo-input {
