@@ -1,33 +1,50 @@
-# informationsgruppen-todo-app
-### Tekniska förutsättningar 
-Ramverket som ska användas är Laravel. Det är okej att använda starter kits, så som Laravel Breeze, för att hantera autentisering och komma igång med applikationen. Scaffolding är också okej att använda.
+## How to use
 
-Som ramverk för CSS så är Bootstrap eller Tailwind godtagbart. Styling tas inte i beaktning, men det ska vara tydligt hur man använder applikationen.
+1. Clone the repo
 
-För JavaScript så ska Vue.js användas.
+    ```sh
+    git clone https://github.com/your_username_/Project-Name.git
+    ```
 
-Användning av git är ett krav. Det behöver inte ligga på GitHub eller Gitlab, utan en lokal git repository som zippas när uppgiften lämnas in fungerar lika bra.
+2. To get started with the backend, cd into server folder
 
-### Testet
+3. Copy **.env.example** file to **.env** and edit database credentials there
 
-#### Uppgiften består i att skapa en todo-applikation, som uppfyller följande user stories:
+4. If you want to use sqlite, change db connection in .env to **DB_CONNECTION=sqlite** and run:
 
-[x] Som en gäst kan jag skapa ett användarkonto, så jag kan komma åt applikationen
+    ```sh
+    touch database/database.sqlite
+    ```
 
-[x] Som en gäst kan jag logga in med mitt konto
+5. Run:
 
-[x] Som en användare kan jag logga ut ifrån mitt konto
+    ```sh
+    composer install
+    php artisan key:generate
+    php artisan migrate
+    ```
 
-[x] Som en användare kan jag skapa en todo-lista
+6. Thats's it, launch the server with:
 
-[x] Som en användare kan jag visa mina todo-listor
+    ```sh
+    php artisan serve
+    ```
 
-[x] Som en användare kan jag ta bort min todo-lista
+7. To get started with the frontend, cd into client folder
 
-[x] Som en användare kan jag lägga till uppgifter i min todo-lista
+8. Run:
 
-[x] Som en användare kan jag visa alla uppgifter i min todo-lista
+    ```sh
+    npm install
+    ```
 
-[x] Som en användare kan jag ta bort uppgifter i min todo-lista
+9. Copy **.env.example** file to **.env** and edit server connection there
 
-[] Som en användare kan jag markera uppgifter i min todo-lista som klara
+    ```sh
+    Example: VUE_APP_LARAVEL_API=http://127.0.0.1:8000/api
+    ```
+
+10. Thats's it, launch the client with:
+    ```sh
+    npm run serve
+    ```
