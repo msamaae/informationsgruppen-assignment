@@ -30,28 +30,20 @@ export default {
                     return this.todoItem.completed = true;
                 }
             },
-
             set(newValue) {
                 return this.todoItem.completed = newValue;
             }
-        }
-    },
-    watch: {
-        completed(val) {
-            console.log(val);
-        }
+        },
     },
     methods: {
         async completeTodo(todo) {
             await this.$store.dispatch('completeTodo', {
-                todoListId: todo.todo_list_id,
                 todoId: todo.id,
                 completed: todo.completed
             })
         },
         async deleteTodo(todo) {
             await this.$store.dispatch('deleteTodo', {
-                todoListId: todo.todo_list_id,
                 todoId: todo.id
             })
         }

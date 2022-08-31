@@ -60,6 +60,7 @@ export default {
             this.$store.dispatch('addTodo', {
                 todoListId: this.selectedTodoList,
                 description: this.newTodo,
+                completed: false
             })
 
             this.newTodo = '';

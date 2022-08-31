@@ -4,7 +4,7 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-axios.defaults.baseURL = 'http://127.0.0.1:8001/api';
+axios.defaults.baseURL = process.env.VUE_APP_LARAVEL_API;
 
 export default new Vuex.Store({
 	state: {
@@ -14,7 +14,7 @@ export default new Vuex.Store({
 		filter: 'all',
 		todoLists: [],
 		todos: [],
-        selectedTodoList: 0
+		selectedTodoList: 0,
 	},
 	getters: {
 		isLoggedIn(state) {
@@ -23,9 +23,9 @@ export default new Vuex.Store({
 		name(state) {
 			return state.name;
 		},
-        selectedTodoList(state) {
-            return state.selectedTodoList;
-        },
+		selectedTodoList(state) {
+			return state.selectedTodoList;
+		},
 		todoLists(state) {
 			return state.todoLists;
 		},
@@ -48,9 +48,6 @@ export default new Vuex.Store({
 			}
 			return state.todos;
 		},
-		showClearCompletedButton(state) {
-			return state.todos.filter(todo => todo.completed).length > 0;
-		},
 	},
 	mutations: {
 		SET_USER_ID(state, userId) {
@@ -71,9 +68,9 @@ export default new Vuex.Store({
 		CLEAR_TOKEN(state) {
 			state.token = null;
 		},
-        SELECTED_TODOLIST(state, selectedTodoList) {
-            state.selectedTodoList = selectedTodoList;
-        },
+		SELECTED_TODOLIST(state, selectedTodoList) {
+			state.selectedTodoList = selectedTodoList;
+		},
 		SET_TODOLISTS(state, todoLists) {
 			state.todoLists = todoLists;
 		},
@@ -89,7 +86,9 @@ export default new Vuex.Store({
 		ADD_TODO(state, todo) {
 			state.todos.push({
 				id: todo.id,
+				todoListId: todo.todo_list_id,
 				description: todo.description,
+				completed: todo.completed,
 			});
 		},
 		SET_FILTER(state, filter) {
@@ -202,7 +201,6 @@ export default new Vuex.Store({
 					axios
 						.post('/todolists', { name })
 						.then(response => {
-							console.log(response);
 							context.commit('ADD_TODOLIST', response.data);
 							resolve(response);
 						})
@@ -249,13 +247,13 @@ export default new Vuex.Store({
 				});
 			}
 		},
-		addTodo(context, { todoListId, description }) {
+		addTodo(context, { todoListId, description, completed }) {
 			axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.token}`;
 
 			if (context.getters.isLoggedIn) {
 				return new Promise((resolve, reject) => {
 					axios
-						.post(`/todolists/${todoListId}/todos`, { description })
+						.post(`/todolists/${todoListId}/todos`, { description, completed })
 						.then(response => {
 							context.commit('ADD_TODO', response.data);
 							resolve(response);
@@ -267,13 +265,13 @@ export default new Vuex.Store({
 				});
 			}
 		},
-		deleteTodo(context, { todoListId, todoId }) {
+		deleteTodo(context, { todoId }) {
 			axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.token}`;
 
 			if (context.getters.isLoggedIn) {
 				return new Promise((resolve, reject) => {
 					axios
-						.delete(`/todolists/${todoListId}/todos/${todoId}`)
+						.delete(`/todolists/${context.getters.selectedTodoList}/todos/${todoId}`)
 						.then(response => {
 							context.commit('SET_TODOS', response.data);
 							resolve(response);
@@ -285,13 +283,13 @@ export default new Vuex.Store({
 				});
 			}
 		},
-		completeTodo(context, { todoListId, todoId, completed }) {
+		completeTodo(context, { todoId, completed }) {
 			axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.token}`;
 
 			if (context.getters.isLoggedIn) {
 				return new Promise((resolve, reject) => {
 					axios
-						.put(`/todolists/${todoListId}/todos/${todoId}`, { completed })
+						.put(`/todolists/${context.getters.selectedTodoList}/todos/${todoId}`, { completed })
 						.then(response => {
 							context.commit('SET_TODOS', response.data);
 							resolve(response);

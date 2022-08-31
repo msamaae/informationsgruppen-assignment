@@ -13,7 +13,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
 		if (!store.getters.isLoggedIn) {
 			next({
 				name: 'login',
@@ -30,6 +30,7 @@ function configRoutes() {
 	return [
 		{
 			path: '/',
+            redirect: '/login',
 			name: 'AuthLayout',
 			component: AuthLayout,
 			children: [

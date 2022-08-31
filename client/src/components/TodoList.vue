@@ -11,13 +11,13 @@
 
         <p>My todolists</p>
         <div class="select-todolist">
-            <select name="todolists" @change="getTodos($event)">
-                <option value="" disabled selected>Select your todolist</option>
+            <select name="todolists" @change="getTodos($event)" v-model="selectedTodoList">
+                <option value="0" disabled selected>Select your todolist</option>
                 <option v-for="(value, key) in todoLists" :key="key" :value="value.id">
                     {{ value.name }}
                 </option>
             </select>
-            <div class="delete-todolist" v-if="selectedTodoList !== 0">
+            <div class="delete-todolist" v-if="selectedTodoList !== 0 ">
                 <button @click="deleteTodoList">&times;</button>
             </div>
         </div>
@@ -31,16 +31,21 @@ export default {
     data() {
         return {
             newTodoList: '',
-            successText: ''
+            successText: '',
         }
     },
     computed: {
         todoLists() {
             return this.$store.getters.todoLists;
         },
-        selectedTodoList() {
-            return this.$store.getters.selectedTodoList;
-        },
+        selectedTodoList: {
+            get() {
+                 return this.$store.getters.selectedTodoList;
+            },
+            set() {
+                return this.$store.commit('SELECTED_TODOLIST', 0)
+            }
+        }
     },
     mounted() {
         this.$store.dispatch('getTodoLists');
@@ -63,11 +68,12 @@ export default {
         },
         async deleteTodoList() {
             try {
-                if (this.selectedTodoList !== 0) {
-                    const { status } = await this.$store.dispatch('deleteTodoList', { todoListId: this.selectedTodoList })
+                if (this.selectedTodoList !== 0 ) {
+                    const res = await this.$store.dispatch('deleteTodoList', { todoListId: this.selectedTodoList })
 
-                    if (status === 200) {
+                    if (res.status === 200) {
                         this.successText = 'Todolist removed successfully!';
+                        this.$store.dispatch('selectedTodoList', 0);
                     }
                 }
             } catch (error) {
@@ -75,14 +81,12 @@ export default {
             } finally {
                 setTimeout(() => {
                     this.successText = ''
-                }, 3000);
+                }, 2000);
             }
         },
         async getTodos(e) {
             try {
-                // this.selectedTodoList = e.target.value;
                 this.$store.dispatch('selectedTodoList', e.target.value);
-                console.log(this.selectedTodoList);
                 await this.$store.dispatch('getTodos', { todoListId: this.selectedTodoList })
             } catch (error) {
                 console.error(error);
